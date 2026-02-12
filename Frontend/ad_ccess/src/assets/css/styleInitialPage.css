@@ -1,0 +1,107 @@
+html{
+  font-size: 10px;
+}
+
+body{
+  font-size: 1.6rem;
+  background-color: #101a23;
+  color:white;
+}
+
+
+/* Variables para mantener consistencia */
+:root {
+  --primary-color: #3498db;
+  --bg-card: #1c2833;
+  --input-bg: #0b1118;
+  --border-color: #34495e;
+  --text-muted: #afaaaa;
+}
+
+.layout__container-initialPage{
+  width: 100%;
+  min-height:100vh;/* Ocupa el alto total de la ventana */
+  /* display:flex;
+  justify-content: center;
+  align-items: center; */
+  /* margin: 0 auto; */
+
+
+}
+
+.layout__main-initialPage {
+  
+  background-color: var(--bg-card);
+  padding: 3rem;
+  max-width: 90rem; /* Un poco más ancho para las dos columnas */
+  box-shadow: 0px 10px 30px rgba(0,0,0,0.5);
+  margin: 5rem auto;
+}
+
+/* Títulos con línea decorativa */
+.page-heading {
+  font-size: 2.8rem;
+  margin-bottom: 3rem;
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 1rem;
+  width: 100%;
+}
+
+/* Grid para organizar los bloques de datos */
+.layout-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 3rem;
+  width: 100%;
+}
+
+/* Estilo de los contenedores de campos */
+.campo-contenedor {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.input {
+  width: 100%;
+  padding: 1.2rem;
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.8rem;
+  color: white;
+  transition: border 0.3s;
+}
+
+.input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+/* Sección de la foto con estilo de "Dropzone" */
+.seccion-foto {
+  border: 2px dashed var(--border-color);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgba(0,0,0,0.2);
+}
+
+.cargador-titulo { font-weight: bold; color: var(--primary-color); }
+.cargador-subtitulo { font-size: 1.2rem; color: var(--text-muted); }
+
+/* Botones */
+.btn--primary {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 1.5rem 3rem;
+  border: none;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  font-weight: bold;
+  width: 100%;
+  margin-top: 2rem;
+}

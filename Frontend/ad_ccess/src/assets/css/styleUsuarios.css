@@ -1,0 +1,171 @@
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+    --color-primario: #0d141b; 
+    --color-white: #ffffff;
+    --color-btn: #007bff; 
+    --font-sans: 'Inter', sans-serif;
+}
+
+.app-root {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-primario);
+  color: var(--color-white);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Contenedor Principal */
+.page-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: --color-primario; /* Un fondo claro para que resalte la tabla */
+}
+
+/* Área de contenido a la derecha del Sidebar */
+.layout-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra el contenido horizontalmente */
+  padding: 2rem;
+  overflow-x: hidden;
+}
+
+/* Header y Tabla alineados al mismo ancho */
+.page-heading-row, 
+.table-wrapper {
+  width: 100%;
+  max-width: 1100px; /* Controla qué tan ancha quieres la tabla */
+}
+
+/* Estilos del Header */
+.page-heading-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+#page-title {
+  font-size: 3rem;
+  color: #ced0d6;
+  margin: 0;
+}
+
+/* Contenedor de la Tabla */
+.table-wrapper {
+  background: --color-primario;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Para que los bordes redondeados corten la tabla */
+}
+
+.tabla-usuarios {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+/* Celdas y Encabezados espaciosos */
+.tabla-encabezado th {
+  background-color: #f1f4f9;
+  padding: 1.2rem 1.5rem;
+  color: #4f5b76;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+.fila {
+  border-bottom: 1px solid #edf2f7;
+  text-align: center;
+  transition: background 0.2s;
+
+}
+
+.fila:hover {
+  background-color: #0d141b;
+}
+
+.celda {
+  padding: 1.2rem 1.5rem; /* Aquí das el espacio (padding) */
+  vertical-align: middle;
+}
+
+.celda-acciones {
+display: flex;
+justify-content: center;
+}
+
+
+
+/* Avatar e Info del Usuario */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-avatar-mini {
+  width: 40px;
+  height: 40px;
+  background: var(--primary-color, #4f46e5);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+/* Badges y Tags */
+.role-tag {
+  background: #eef2ff;
+  color: #4338ca;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.badge-active {
+  color: #059669;
+  background: #ecfdf5;
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Botones de acción */
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  font-size: 1.2rem;
+}
+
+.action-buttons a {
+  color: #94a3b8;
+  transition: 0.2s;
+  font-size: 2.5rem; /* Tamaño de icono más grande */
+}
+
+.action-buttons a:hover {
+  color: #4f46e5;
+}
+
+.action-buttons .delete-link:hover {
+  color: #ef4444;
+}

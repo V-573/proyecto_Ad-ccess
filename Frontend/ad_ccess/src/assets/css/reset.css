@@ -1,0 +1,48 @@
+/* 1. Usar box-sizing: border-box para facilitar el cálculo de tamaños */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* 2. Quitar márgenes y rellenos por defecto */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* 3. Evitar que las imágenes se salgan de su contenedor y suavizar bordes */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 4. Heredar fuentes para inputs y botones (evita fuentes feas del sistema) */
+input, button, textarea, select {
+  font: inherit;
+}
+
+/* 5. Evitar saltos de línea extraños en textos largos */
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+/* 6. Mejorar el renderizado de la tipografía y scroll suave */
+html {
+  -webkit-text-size-adjust: none; /* Evita zoom automático en móviles */
+  scroll-behavior: smooth;
+}
+
+body {
+  line-height: 1.5;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 7. Eliminar puntos de las listas y subrayado de links (opcional pero común) */
+ul, ol {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
