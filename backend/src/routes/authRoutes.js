@@ -1,5 +1,5 @@
 import express from 'express';
-import { registrarAdmin, obtenerUsuarios, configurarInicial, login } from '../controllers/authController.js';
+import { registrarAdmin, obtenerUsuarios, configurarInicial, login, obtenerDetalleUsuario, eliminarUsuario, actualizarUsuario } from '../controllers/authController.js';
 import { verificarToken, esAdmin } from '../middlewares/authMiddleware.js'; // Importa los vigilantes
 import multer from 'multer';
 import path from 'path';
@@ -35,7 +35,21 @@ const upload = multer({
 // Ruta: POST /api/auth/registro-admin
 // REGISTRO: Aquí unimos todo en una sola línea (Vigilantes + Carga de Foto + Controlador)
 // IMPORTANTE: upload.single('foto') debe ir DESPUÉS de verificarToken si quieres validar el usuario antes de procesar la imagen
-router.post('/registro-admin', verificarToken, esAdmin, upload.single('foto'), registrarAdmin);// Ahora esta puerta está cerrada con doble llave:verificarToken, esAdmin
+// router.post('/registro-admin', verificarToken, esAdmin, upload.single('foto'), registrarAdmin);// Ahora esta puerta está cerrada con doble llave:verificarToken, esAdmin
+
+
+router.post(
+    '/registro-admin', 
+    verificarToken, 
+    esAdmin, 
+    upload.fields([
+        { name: 'foto', maxCount: 1 }, 
+        { name: 'fotosFamiliares', maxCount: 10 }
+    ]), 
+    registrarAdmin
+);
+
+
 
 // ... (después de la ruta de registro)
 router.post('/login', login);// Abierta al público
@@ -47,11 +61,15 @@ router.get('/usuarios', verificarToken, esAdmin, obtenerUsuarios);
 //ruta para configuracion inicial
 router.post('/configuracion-inicial', verificarToken, esAdmin, configurarInicial);
 
+//ruta para ver detalles de usuario
+router.get('/usuario/:id', verificarToken, obtenerDetalleUsuario); 
 
+//ruta para eliminar usuario
+router.delete('/usuario/:id', verificarToken, eliminarUsuario);
 
+//ruta para actualizar datos del usuario
+router.put('/usuario/:id', verificarToken, actualizarUsuario);
 export default router;
 
 
 
-// token de admin para pruebas
-// "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sIjoiYWRtaW4iLCJpYXQiOjE3NzA3NzY1MzYsImV4cCI6MTc3MDgwNTMzNn0.VIYIGTDKPmzAZ_IuxvAoE2PLpGHZFCHZ6qCN3CuSMyA"

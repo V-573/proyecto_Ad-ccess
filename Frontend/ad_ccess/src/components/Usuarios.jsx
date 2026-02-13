@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import clienteAxios from '../api/axios';
-import { useNavigate } from 'react-router-dom'; // 1. Importar
+import { useNavigate, Link } from 'react-router-dom'; // 1. Importar
+
+
 const Usuarios = () => {
 
 
@@ -13,6 +15,8 @@ const Usuarios = () => {
         // Aquí podrías poner lógica extra si quisieras
         navigate('/usuarios/nuevo'); // 3. Navegar
     };
+
+
     useEffect(() => {
         const obtenerUsuarios = async () => {
             try {
@@ -41,6 +45,25 @@ const Usuarios = () => {
             .slice(0, 2);
     };
 
+
+    const eliminarUser = async (id, nombre) => {
+    const confirmar = window.confirm(`¿Estás seguro de eliminar a ${nombre}?`);
+    if (!confirmar) return;
+
+    try {
+        const token = localStorage.getItem('token');
+        await clienteAxios.delete(`/usuario/${id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        
+        // Actualizar el estado para que desaparezca de la tabla inmediatamente
+        setUsuarios(usuarios.filter(u => u.id !== id));
+        alert("Usuario eliminado");
+    } catch (error) {
+        console.error(error);
+        alert("No se pudo eliminar el usuario");
+    }
+};
     return (
         <div className="page-container">
             <Sidebar />
@@ -75,8 +98,13 @@ const Usuarios = () => {
                                     usuarios.map((usuario) => (
                                         <tr key={usuario.id} className="fila">
                                             <td className="celda celda-nombre">
+                                              
+                                             
                                                 <div className="user-info">
                                                     <div className="user-avatar-mini">
+
+
+
                                                         {/* {getIniciales(usuario.nombre_completo)} */}
                                                         {usuario.foto ? (
                                                             <img src={`http://localhost:4000${usuario.foto}`} alt="avatar" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
@@ -84,10 +112,19 @@ const Usuarios = () => {
                                                             getIniciales(usuario.nombre_completo)
                                                         )}
 
+ 
+
 
                                                     </div>
+
+                                                    <Link to={`/usuario/${usuario.id}`} className="enlace-perfil">
                                                     <span>{usuario.nombre_completo}</span>
+
+ </Link> 
+
                                                 </div>
+
+
                                             </td>
                                             <td className="celda celda-rol">
                                                 <span className="role-tag">{usuario.rol}</span>
@@ -101,12 +138,23 @@ const Usuarios = () => {
                                             </td>
                                             <td className="celda celda-acciones">
                                                 <div className="action-buttons">
-                                                    <a href="#" title="Editar">
+                                                    {/* <a href="#" title="Editar">
                                                         <i className="ph ph-pencil-simple"></i>
-                                                    </a>
-                                                    <a href="#" className="delete-link" title="Eliminar">
+                                                    </a> */}
+
+                                                    <button
+                                                        className="delete-link"
+                                                        title="Eliminar"
+                                                        onClick={() => eliminarUser(usuario.id, usuario.nombre_completo)}
+                                                        style={{ border: 'none', background: 'none', cursor: 'pointer' }}
+                                                    >
                                                         <i className="ph ph-trash"></i>
-                                                    </a>
+                                                    </button>
+                                                    {/* <a href="#" className="delete-link" btn-icon title="Eliminar">
+
+
+                                                        <i className="ph ph-trash"></i>
+                                                    </a> */}
                                                 </div>
                                             </td>
                                         </tr>

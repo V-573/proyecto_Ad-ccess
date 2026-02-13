@@ -8,6 +8,7 @@ import './assets/css/styleInitialPage.css';
 import './assets/css/stylePanelControl.css';
 import './assets/css/styleUsuarios.css';
 import './assets/css/styleRegistrarUsuario.css';
+import './assets/css/stylePerfilUsuario.css';
 
 import ConfiguracionInicial from './pages/ConfiguracionInicial.jsx';
 import Dashboard from './pages/Dashboard.jsx';
@@ -20,6 +21,7 @@ import Usuarios from './components/Usuarios.jsx';
 // Importación de Páginas
 import Login from './pages/login.jsx';
 import RegistrarUsuario from './pages/RegistarUsuario.jsx';
+import PerfilUsuario from './components/PerfilUsuario.jsx';
 // import Dashboard from './pages/Dashboard'; // Lo crearás después
 
 function App() {
@@ -42,6 +44,8 @@ function App() {
  {/* Redirigir a pagina inicial para registrar datos de nidad residencial y registrar el administrador inicial */}
         <Route path="/configuracion-inicial" element={<ConfiguracionInicial />} />
 
+{/* ruta para ver detalles de perfil de usuario */}
+<Route path="/usuario/:id" element={<PerfilUsuario />} />
 
       </Routes>
     </Router>

@@ -166,6 +166,25 @@ justify-content: center;
   color: #4f46e5;
 }
 
-.action-buttons .delete-link:hover {
+/* .action-buttons .delete-link:hover {
   color: #ef4444;
+} */
+
+/* Estilo específico para que el icono se vea grande y centrado */
+.delete-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px; /* Espacio para hacer clic fácil */
+    transition: transform 0.2s, color 0.2s;
+}
+
+.delete-link i {
+    font-size: 2.2rem; /* Tamaño ajustable */
+    color: #d49090;    /* Color rojo de una vez */
+}
+
+.delete-link i:hover {
+    transform: scale(1.1); /* Efecto de crecimiento al pasar el mouse */
+    color: #e6260d; 
 }
