@@ -47,6 +47,9 @@ function App() {
 {/* ruta para ver detalles de perfil de usuario */}
 <Route path="/usuario/:id" element={<PerfilUsuario />} />
 
+<Route path="/registrar-usuario/:id?" element={<RegistrarUsuario />} />
+
+
       </Routes>
     </Router>
   );

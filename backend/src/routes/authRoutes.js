@@ -68,7 +68,10 @@ router.get('/usuario/:id', verificarToken, obtenerDetalleUsuario);
 router.delete('/usuario/:id', verificarToken, eliminarUsuario);
 
 //ruta para actualizar datos del usuario
-router.put('/usuario/:id', verificarToken, actualizarUsuario);
+router.put('/usuario/:id', verificarToken, upload.fields([
+    { name: 'foto', maxCount: 1 },
+    { name: 'fotosFamiliares', maxCount: 10 }
+]), actualizarUsuario);
 export default router;
 
 

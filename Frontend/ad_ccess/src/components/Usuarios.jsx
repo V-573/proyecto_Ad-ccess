@@ -145,6 +145,7 @@ const Usuarios = () => {
                                                     <button
                                                         className="delete-link"
                                                         title="Eliminar"
+                                      
                                                         onClick={() => eliminarUser(usuario.id, usuario.nombre_completo)}
                                                         style={{ border: 'none', background: 'none', cursor: 'pointer' }}
                                                     >

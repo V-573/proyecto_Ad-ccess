@@ -13,7 +13,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-
+app.use(express.urlencoded({ extended: true }));
 // 1. Crear la carpeta 'uploads' si no existe
 const uploadDir = './uploads';
 if (!fs.existsSync(uploadDir)) {
