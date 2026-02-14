@@ -224,137 +224,6 @@ export const eliminarUsuario = async (req, res) => {
 
 // --- EDITAR USUARIO (Básico) ---
 
-
-// export const actualizarUsuario = async (req, res) => {
-//     const { id } = req.params;
-//     const client = await pool.connect();
-// const { nombre, email } = req.body;
-// let rutaFoto = req.body.foto; // Mantener la foto actual si no hay cambios
-
-// // Si Multer procesó una nueva imagen
-// if (req.files && req.files['fotoPerfil']) {
-//     rutaFoto = `/uploads/${req.files['fotoPerfil'][0].filename}`;
-// }
-
-// // Actualizar en la base de datos
-// await client.query(
-//     "UPDATE usuarios SET nombre = $1, email = $2, foto = $3 WHERE id = $4",
-//     [nombre, email, rutaFoto, id]
-// );
-//     try {
-//         await client.query('BEGIN');
-
-//         // 1. Extraer datos del body
-//         // Nota: Si usas FormData, estos datos vienen como strings si son JSON
-//         const { nombre_completo, email, rol, casa_apto, identificacion, familia, vehiculos } = req.body;
-
-//         // 2. Actualizar datos básicos del Usuario
-//         await client.query(
-//             `UPDATE usuarios 
-//              SET nombre_completo = $1, email = $2, rol = $3, casa_apto = $4, identificacion = $5 
-//              WHERE id = $6`,
-//             [nombre_completo, email, rol, casa_apto, identificacion, id]
-//         );
-
-//         // 3. Manejar Familiares (Si vienen en la petición)
-
-// if (familia) {
-//     const miembros = typeof familia === 'string' ? JSON.parse(familia) : familia;
-    
-//     // 1. OBTENER LOS IDS QUE VIENEN DEL FRONTEND
-//     const idsQueSeQuedan = miembros.map(f => f.id).filter(id => id !== null);
-
-//     // 2. ELIMINAR DE LA DB LOS QUE NO ESTÁN EN ESA LISTA
-//     if (idsQueSeQuedan.length > 0) {
-//         await client.query(
-//             "DELETE FROM familiares WHERE usuario_id = $1 AND id NOT IN (" + idsQueSeQuedan.join(',') + ")",
-//             [id]
-//         );
-//     } else {
-//         // Si la lista de IDs está vacía, es que borraron a todos los familiares
-//         await client.query("DELETE FROM familiares WHERE usuario_id = $1", [id]);
-//     }
-
-//     // 3. SEGUIR CON EL UPDATE/INSERT (Lo que ya tenías)
-//     const fotosSubidas = req.files['fotosFamiliares'] || [];
-//     let fotoIndex = 0;
-
-//     for (let f of miembros) {
-//         let rutaFotoFinal = f.foto;
-//         if (f.tieneNuevaFoto && fotosSubidas[fotoIndex]) {
-//             rutaFotoFinal = `/uploads/${fotosSubidas[fotoIndex].filename}`;
-//             fotoIndex++;
-//         }
-
-//         if (f.id) {
-//             await client.query(
-//                 "UPDATE familiares SET nombre = $1, identificacion = $2, relacion = $3, foto = $4 WHERE id = $5 AND usuario_id = $6",
-//                 [f.nombre, f.identificacion, f.relacion, rutaFotoFinal, f.id, id]
-//             );
-//         } else {
-//             await client.query(
-//                 "INSERT INTO familiares (usuario_id, nombre, identificacion, relacion, foto) VALUES ($1, $2, $3, $4, $5)",
-//                 [id, f.nombre, f.identificacion, f.relacion, rutaFotoFinal]
-//             );
-//         }
-//     }
-// }
-
-
-
-// // 4. Manejar Vehículos
-// if (vehiculos) {
-//     const autos = typeof vehiculos === 'string' ? JSON.parse(vehiculos) : vehiculos;
-    
-//     // Identificar qué vehículos se mantienen (los que ya tienen ID)
-//     const idsVehiculosQueSeQuedan = autos.map(v => v.id).filter(id => id != null);
-
-//     // Eliminar de la DB los que el usuario quitó en la interfaz
-//     if (idsVehiculosQueSeQuedan.length > 0) {
-//         await client.query(
-//             `DELETE FROM vehiculos WHERE usuario_id = $1 AND id NOT IN (${idsVehiculosQueSeQuedan.join(',')})`,
-//             [id]
-//         );
-//     } else {
-//         // Si la lista está vacía, borramos todos los vehículos de este usuario
-//         await client.query("DELETE FROM vehiculos WHERE usuario_id = $1", [id]);
-//     }
-
-//     // Procesar la lista actualizada (Update o Insert)
-//     for (let v of autos) {
-//         if (v.id) {
-//             // Actualizar vehículo existente
-//             await client.query(
-//                 "UPDATE vehiculos SET placa = $1, tipo = $2, color = $3 WHERE id = $4 AND usuario_id = $5",
-//                 [v.placa, v.tipo, v.color, v.id, id]
-//             );
-//         } else {
-//             // Insertar vehículo nuevo
-//             await client.query(
-//                 "INSERT INTO vehiculos (usuario_id, placa, tipo, color) VALUES ($1, $2, $3, $4)",
-//                 [id, v.placa, v.tipo, v.color]
-//             );
-//         }
-//     }
-// }
-
-
-
-
-
-
-//         await client.query('COMMIT');
-//         res.json({ mensaje: "Usuario y dependencias actualizados con éxito" });
-
-//     } catch (error) {
-//         await client.query('ROLLBACK');
-//         console.error("Error al actualizar completo:", error);
-//         res.status(500).json({ error: "Error interno al actualizar los datos" });
-//     } finally {
-//         client.release();
-//     }
-// };
-
 export const actualizarUsuario = async (req, res) => {
     const { id } = req.params;
     const client = await pool.connect();
@@ -373,6 +242,13 @@ export const actualizarUsuario = async (req, res) => {
             rutaFoto = `/uploads/${req.files['foto'][0].filename}`;
         }
 
+        // Antes de hacer el update/save:
+let valorCasa = req.body.casa_apto;
+
+// Si el campo viene vacío o el rol no lo requiere, lo ponemos en NULL
+if (!valorCasa || valorCasa.trim() === "" || rol !== 'propietario') {
+    valorCasa = null;
+}
         // 3. Actualizar datos básicos del Usuario (Incluida la FOTO)
         await client.query(
             `UPDATE usuarios 
