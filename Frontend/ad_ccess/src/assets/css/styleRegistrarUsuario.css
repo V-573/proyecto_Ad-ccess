@@ -40,8 +40,8 @@ body{
 }
 
 /* Hacemos que los campos sean un poco más altos para que se sientan "grandes" */
-.input {
-  width: 100%;
+.input-pw {
+  width: 50%;
   padding: 1rem; /* Aumentamos el acolchado interno */
   /* font-size: 1rem; */
   background-color: #161d26; /* Color acorde a tu tema oscuro */
@@ -110,7 +110,7 @@ body{
     /* Texto con el mismo color del fondo seleccionado, legible en el contenedor oscuro */
     color: #f0f2f4; 
     background-color: transparent; /* Transparente por defecto */
-    font-size: 0.875rem;
+    font-size: 2rem;
     font-weight: 500;
     line-height: normal;
     transition: all 0.2s ease-in-out;
@@ -185,4 +185,48 @@ body{
     color: #ef4444;
     cursor: pointer;
     font-weight: bold;
+}
+
+
+.btn--secondary-vehiculo{
+padding: 10px;
+width: 20%;
+background-color: #3498DB;
+color:white;
+border-radius: 10px;
+}
+
+/* style={{padding:'10px', width: '20%' }}  */
+
+.btn--secondary-family{
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+background-color: #3498DB;
+color:white;
+border-radius: 10px;
+}
+
+
+/* Escondemos el input original pero que siga siendo funcional */
+.custom-file-upload input[type="file"] {
+    display: none;
+}
+
+/* Le damos estilo al label que ahora actúa como nuestro botón */
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #3498DB; /* Azul claro */
+    color: white;           /* Color de texto oscuro para contraste */
+    border-radius: 10px;      /* Bordes muy curvos */
+    font-weight: bold;
+    transition: background 0.3s ease;
+    border: none;
+}
+
+/* Efecto al pasar el mouse */
+.custom-file-upload:hover {
+    background-color: #87ceeb;
 }

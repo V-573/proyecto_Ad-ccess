@@ -1,7 +1,28 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, Link, useLocation } from 'react-router-dom';
 
 const Sidebar = () => {
     const navigate = useNavigate();
+    // const location = useLocation();
+
+    // // Simulando la obtención del rol (Cámbialo por tu lógica real)
+    // const user = JSON.parse(localStorage.getItem('usuario'));
+    // const rol = user?.rol;
+
+    // // Definición de todos los links posibles
+    // const menuItems = [
+    //     { path: '/dashboard', label: 'Inicio', icon: '🏠', roles: ['admin', 'propietario', 'conserje'] },
+    //     { path: '/perfil', label: 'Mi Perfil', icon: '👤', roles: ['admin', 'propietario'] },
+    //     { path: '/usuarios', label: 'Gestión Usuarios', icon: '👥', roles: ['admin'] },
+    //     { path: '/visitantes', label: 'Visitantes', icon: '🚪', roles: ['admin', 'conserje'] },
+    //     { path: '/parqueadero', label: 'Parqueadero', icon: '🚗', roles: ['admin', 'conserje'] },
+    //     { path: '/minuta', label: 'Minuta', icon: '📝', roles: ['admin', 'conserje'] },
+    //     { path: '/noticias', label: 'Noticias', icon: '📢', roles: ['admin', 'propietario', 'conserje'] },
+    // ];
+
+
+    // // Filtrar links según el rol del usuario
+    // const linksVisibles = menuItems.filter(item => item.roles.includes(rol));
+
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -9,6 +30,8 @@ const Sidebar = () => {
     };
 
     return (
+
+
         <aside className="menu-panel">
             <h1 className="menu-titulo">Ad-ccess</h1>
             <nav className="menu-lista">
@@ -39,7 +62,40 @@ const Sidebar = () => {
                 </button>
             </nav>
         </aside>
+
+
+// <aside className="sidebar">
+//             <div className="sidebar-logo">
+//                 <h2>Ad-ccess</h2>
+//             </div>
+
+//             <nav className="sidebar-nav">
+//                 {linksVisibles.map((item) => (
+//                     <Link 
+//                         key={item.path}
+//                         to={item.path} 
+//                         className={`nav-link ${location.pathname === item.path ? 'active' : ''}`}
+//                     >
+//                         <span className="icon">{item.icon}</span>
+//                         <span className="label">{item.label}</span>
+//                     </Link>
+//                 ))}
+//             </nav>
+
+//             <div className="sidebar-footer">
+//                 <button onClick={handleLogout} className="btn-logout">
+//                     Logout
+//                 </button>
+//             </div>
+
+//         </aside>
+   
+
+
     );
+
+
+
 };
 
 export default Sidebar;

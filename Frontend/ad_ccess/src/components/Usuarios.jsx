@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import clienteAxios from '../api/axios';
 import { useNavigate, Link } from 'react-router-dom'; // 1. Importar
+import Avatar from './Avatar';
 
 
 const Usuarios = () => {
@@ -35,15 +36,15 @@ const Usuarios = () => {
     }, []);
 
     // Función para obtener iniciales del nombre (Ej: "Sandra Leal" -> "SL")
-    const getIniciales = (nombre) => {
-        if (!nombre) return "?";
-        return nombre
-            .split(' ')
-            .map(palabra => palabra[0])
-            .join('')
-            .toUpperCase()
-            .slice(0, 2);
-    };
+    // const getIniciales = (nombre) => {
+    //     if (!nombre) return "?";
+    //     return nombre
+    //         .split(' ')
+    //         .map(palabra => palabra[0])
+    //         .join('')
+    //         .toUpperCase()
+    //         .slice(0, 2);
+    // };
 
 
     const eliminarUser = async (id, nombre) => {
@@ -101,21 +102,26 @@ const Usuarios = () => {
                                               
                                              
                                                 <div className="user-info">
-                                                    <div className="user-avatar-mini">
 
 
-
-                                                        {/* {getIniciales(usuario.nombre_completo)} */}
+                                                    
+                                                      {/* div avatar<div className="user-avatar-mini">
+                                                     
                                                         {usuario.foto ? (
                                                             <img src={`http://localhost:4000${usuario.foto}`} alt="avatar" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
                                                         ) : (
                                                             getIniciales(usuario.nombre_completo)
                                                         )}
+                                                    </div> */}
+<Avatar
+    src={usuario.foto} 
+    nombre={usuario.nombre_completo} 
+    size="35px" 
+    fontSize="0.8rem" 
+/>
 
- 
 
 
-                                                    </div>
 
                                                     <Link to={`/usuario/${usuario.id}`} className="enlace-perfil">
                                                     <span>{usuario.nombre_completo}</span>
@@ -138,10 +144,7 @@ const Usuarios = () => {
                                             </td>
                                             <td className="celda celda-acciones">
                                                 <div className="action-buttons">
-                                                    {/* <a href="#" title="Editar">
-                                                        <i className="ph ph-pencil-simple"></i>
-                                                    </a> */}
-
+                                                
                                                     <button
                                                         className="delete-link"
                                                         title="Eliminar"
@@ -151,11 +154,7 @@ const Usuarios = () => {
                                                     >
                                                         <i className="ph ph-trash"></i>
                                                     </button>
-                                                    {/* <a href="#" className="delete-link" btn-icon title="Eliminar">
-
-
-                                                        <i className="ph ph-trash"></i>
-                                                    </a> */}
+                                                  
                                                 </div>
                                             </td>
                                         </tr>
