@@ -5,10 +5,10 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import './assets/css/reset.css'
 import './assets/css/styleIndex.css'
 import './assets/css/styleInitialPage.css';
-import './assets/css/stylePanelControl.css';
 import './assets/css/styleUsuarios.css';
 import './assets/css/styleRegistrarUsuario.css';
 import './assets/css/stylePerfilUsuario.css';
+import './assets/css/styleSidebar.css';
 
 import ConfiguracionInicial from './pages/ConfiguracionInicial.jsx';
 import Dashboard from './pages/Dashboard.jsx';

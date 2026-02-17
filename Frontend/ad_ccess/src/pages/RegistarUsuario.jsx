@@ -217,9 +217,11 @@ const handleSubmit = async (e) => {
                         <section className="seccion-foto">
                             <h3 className="titulo-seccion">Foto de Perfil</h3>
                             <div className="cargador-contenido" onClick={() => document.getElementById('foto-upload').click()} style={{ cursor: 'pointer' }}>
-                                {preview ? <img src={preview} alt="Preview" style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover' }} /> : <div className="placeholder-foto">📸</div>}
+                                {preview ? <img src={preview} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <div className="placeholder-foto">📸</div>}
                                 <p className="cargador-subtitulo">{isEditMode ? "Click para cambiar foto" : "Click para subir foto"}</p>
                             </div>
+
+
                             <input type="file" id="foto-upload" style={{ display: 'none' }} onChange={(e) => {
                                 const file = e.target.files[0];
                                 setFoto(file);
