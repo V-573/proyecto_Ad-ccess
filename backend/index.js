@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import pool from './src/config/db.js'; // IMPORTANTE: En Node con ES Modules DEBES poner la extensión .js
 import authRoutes from './src/routes/authRoutes.js';
+import accesoRoutes from './src/routes/accesoRoutes.js';
 import fs from 'fs';
 import path from 'path';
 
@@ -38,6 +39,7 @@ pool.query('SELECT NOW()', (err, res) => {
 
 // Rutas
 app.use('/api/auth', authRoutes);
+app.use('/api/acceso', accesoRoutes);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`🚀 Server en puerto ${PORT}`));

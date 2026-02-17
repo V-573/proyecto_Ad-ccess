@@ -9,7 +9,7 @@ import {
     eliminarUsuario, 
     actualizarUsuario 
 } from '../controllers/authController.js';
-import { verificarToken, esAdmin } from '../middlewares/authMiddleware.js';
+import { verificarToken, permitirRoles} from '../middlewares/authMiddleware.js';
 import { upload } from '../config/multer.js'; // Si ya creaste el archivo config/multer.js
 
 const router = express.Router();
@@ -22,11 +22,11 @@ const uploadCampos = upload.fields([
 
 router.post('/login', login);
 
-router.post('/configuracion-inicial', verificarToken, esAdmin, uploadCampos, configurarInicial);
+router.post('/configuracion-inicial', verificarToken, permitirRoles('admin'), uploadCampos, configurarInicial);
 
-router.get('/usuarios', verificarToken, esAdmin, obtenerUsuarios);
+router.get('/usuarios', verificarToken, permitirRoles('admin'), obtenerUsuarios);
 
-router.post('/registro-admin', verificarToken, esAdmin, uploadCampos, registrarAdmin);
+router.post('/registro-admin', verificarToken, permitirRoles('admin'), uploadCampos, registrarAdmin);
 
 router.get('/usuario/:id', verificarToken, obtenerDetalleUsuario);
 

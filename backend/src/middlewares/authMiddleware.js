@@ -19,10 +19,43 @@ export const verificarToken = (req, res, next) => {
     }
 };
 
-// Middleware para roles específicos
-export const esAdmin = (req, res, next) => {
-    if (req.usuario.rol !== 'admin') {
-        return res.status(403).json({ error: "Acceso denegado. Se requiere rol de Administrador." });
-    }
-    next();
+//Middleware para roles específicos
+// export const esAdmin = (req, res, next) => {
+//     if (req.usuario.rol !== 'admin') {
+//         return res.status(403).json({ error: "Acceso denegado. Se requiere rol de Administrador." });
+//     }
+//     next();
+// };
+
+// export const permitirRoles = (...rolesPermitidos) => {
+//     return (req, res, next) => {
+//         // IMPORTANTE: Tu verificarToken usa 'req.usuario', así que aquí usamos lo mismo
+//         if (!req.usuario || !rolesPermitidos.includes(req.usuario.rol)) {
+//             return res.status(403).json({ 
+//                 error: `Acceso denegado. Se requiere uno de estos roles: ${rolesPermitidos.join(', ')}` 
+//             });
+//         }
+//         next();
+//     };
+// };
+
+export const permitirRoles = (...rolesPermitidos) => {
+    return (req, res, next) => {
+        // Verificamos que exista el usuario y el rol en el req (puesto por verificarToken)
+        if (!req.usuario || !req.usuario.rol) {
+            return res.status(403).json({ error: "No se encontró rol en el token" });
+        }
+
+        // Convertimos a minúsculas para comparar sin errores
+        const rolUsuario = req.usuario.rol.toLowerCase();
+        const tienePermiso = rolesPermitidos.some(rol => rol.toLowerCase() === rolUsuario);
+
+        if (!tienePermiso) {
+            return res.status(403).json({ 
+                error: `Acceso denegado. Se requiere uno de estos roles: ${rolesPermitidos.join(', ')}` 
+            });
+        }
+        
+        next();
+    };
 };

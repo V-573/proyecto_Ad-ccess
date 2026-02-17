@@ -199,3 +199,16 @@ export const gestionarVehiculos = async (client, usuarioId, vehiculosData, esEdi
         }
     }
 };
+
+export const buscarPropietarioPorFiltro = async (termino) => {
+    // Buscamos coincidencias parciales en casa_apto o nombre_completo
+    const query = `
+        SELECT id, nombre_completo, casa_apto 
+        FROM usuarios 
+        WHERE (casa_apto ILIKE $1 OR nombre_completo ILIKE $1)
+        AND rol = 'propietario'
+        LIMIT 10
+    `;
+    const res = await pool.query(query, [`%${termino}%`]);
+    return res.rows;
+};

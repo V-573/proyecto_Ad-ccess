@@ -33,6 +33,7 @@ function App() {
         
         {/* Ruta del Dashboard (por ahora vacía) */}
         <Route path="/dashboard" element={<Dashboard/>} />
+        <Route path="/visitantes" element={<Dashboard />} />
 
         <Route path="/usuarios" element={<Usuarios />} />
 
