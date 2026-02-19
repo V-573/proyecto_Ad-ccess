@@ -46,12 +46,28 @@ router.put('/salida/:id',
 
 // --- RUTAS DE CONSULTA ---
 
+// --- RUTAS DE CONSULTA Y ESTADO ---
+
+// 1. ESTADO DEL PARQUEADERO (Agrégale los roles por seguridad)
+router.get('/estado-parqueadero', 
+    verificarToken, 
+    permitirRoles('admin', 'conserje', 'propietario'), // Agregamos propietario por si quieres que ellos lo vean luego
+    accesoController.consultarEstadoParqueadero 
+);
+
+
+
 // Historial completo de movimientos
 router.get('/historial', 
     verificarToken, 
     permitirRoles('admin', 'conserje'), 
     accesoController.obtenerHistorial
 );
+
+
+
+
+
 
 // Buscador de propietarios/residentes (para el formulario de entrada)
 router.get('/buscar-propietario', 
@@ -92,5 +108,9 @@ router.get('/lista-gestion',
         }
     }
 );
+
+
+
+
 
 export default router;

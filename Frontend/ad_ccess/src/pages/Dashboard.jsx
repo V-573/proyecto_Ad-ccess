@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import InicioConserje from '../components/Conserje/InicioConcerje.jsx'; // Asegúrate de que la ruta sea correcta
 import PantallaVisitantes from '../components/Conserje/PantallaVisitantes.jsx';
+import RegistroPasado from '../components/Conserje/RegistroPasado.jsx';
 
 const Dashboard = () => {
     // 1. Estados y Datos de Usuario
@@ -29,7 +30,7 @@ const Dashboard = () => {
             case 'visitantes':
                 return <PantallaVisitantes />;
             case 'parqueadero':
-                return <div className="p-6 text-gray-600">Gestión de Parqueaderos (Próximamente)</div>;
+               return <RegistroPasado />;
             case 'minuta':
                 return <div className="p-6 text-gray-600">Libro de Minutas (Próximamente)</div>;
             default:
