@@ -1,27 +1,73 @@
 import pool from '../config/db.js';
 
-export const registrarEntrada = async (datos, usuario_id) => {
+
+export const obtenerEstadoParqueadero = async () => {
     try {
-        const { nombre, identificacion, usuario_visitado_id, motivo, observaciones } = datos;
+        // Verifica que la tabla se llame 'unidades_residenciales' 
+        // y la columna 'parqueaderos_totales'
+        const unidadRes = await pool.query("SELECT parqueaderos_totales FROM unidades_residenciales LIMIT 1");
         
-        // CORRECCIÓN: Cambiamos 'conserjeId' por 'usuario_id' que es lo que recibe la función
-        const res = await pool.query(
-            `INSERT INTO registros_acceso (nombre_visitante, identificacion_visitante, usuario_visitado_id, motivo, conserje_id, observaciones) 
-             VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-            [nombre, identificacion, usuario_visitado_id, motivo, usuario_id, observaciones]
+        // Si la tabla está vacía, esto daría error, por eso el check:
+        const totalCapacidad = unidadRes.rows.length > 0 ? parseInt(unidadRes.rows[0].parqueaderos_totales) : 0;
+
+        const ocupadosRes = await pool.query(
+            "SELECT COUNT(*)::int FROM registros_acceso WHERE tiene_vehiculo = TRUE AND fecha_salida IS NULL"
         );
         
-        return res.rows[0];
+        const ocupados = ocupadosRes.rows[0].count || 0;
+
+        return {
+            total: totalCapacidad,
+            ocupados: ocupados,
+            disponibles: Math.max(0, totalCapacidad - ocupados)
+        };
     } catch (error) {
-        // Esto hará que ahora sí veas el error en la consola del backend
-        console.error("Error en AccesoService.registrarEntrada:", error.message);
+        // ESTO TE DIRÁ EL ERROR REAL EN LA TERMINAL DEL BACKEND
+        console.error("ERROR CRÍTICO EN obtenerEstadoParqueadero:", error.message);
         throw error; 
     }
 };
 
+export const registrarEntrada = async (datos, usuario_id) => {
+    // IMPORTANTE: Los nombres aquí deben coincidir con lo que envías en el frontend (datosAEnviar)
+    const { 
+        nombre_visitante, 
+        identificacion_visitante, 
+        usuario_visitado_id, 
+        motivo, 
+        observaciones, 
+        tiene_vehiculo, 
+        placa_vehiculo 
+    } = datos;
+    
+    // Validar cupo si trae vehículo
+    if (tiene_vehiculo) {
+        const estado = await obtenerEstadoParqueadero();
+        if (estado.disponibles <= 0) {
+            const error = new Error("CAPACIDAD_PARQUEADERO_AGOTADA");
+            error.status = 400; // Para que el controlador sepa que es un error de cliente
+            throw error;
+        }
+    }
 
-
-
+    // El INSERT debe usar los nombres de las columnas de tu tabla SQL
+    const res = await pool.query(
+        `INSERT INTO registros_acceso 
+        (nombre_visitante, identificacion_visitante, usuario_visitado_id, motivo, conserje_id, observaciones, tiene_vehiculo, placa_vehiculo) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+        [
+            nombre_visitante, 
+            identificacion_visitante, 
+            usuario_visitado_id, 
+            motivo, 
+            usuario_id, 
+            observaciones || '', 
+            tiene_vehiculo || false, 
+            tiene_vehiculo ? placa_vehiculo.toUpperCase() : null
+        ]
+    );
+    return res.rows[0];
+};
 
 
 export const registrarSalida = async (registroId) => {
@@ -62,9 +108,27 @@ export const listarVisitantesActivos = async () => {
         SELECT r.*, u.nombre_completo as visitado_nombre, u.casa_apto
         FROM registros_acceso r
         JOIN usuarios u ON r.usuario_visitado_id = u.id
-        WHERE r.fecha_salida IS NULL 
-           OR r.fecha_entrada >= CURRENT_DATE
-        ORDER BY r.fecha_salida IS NULL DESC, r.fecha_entrada DESC
+        WHERE r.fecha_salida IS NULL  -- <--- ESTO ES LO CLAVE: Solo los que no han salido
+        ORDER BY r.fecha_entrada DESC
+    `);
+    return res.rows;
+};
+
+
+export const listarHistorialVisitantes = async () => {
+    const res = await pool.query(`
+        SELECT 
+            r.id,
+            r.nombre_visitante,
+            r.identificacion_visitante,
+            r.placa_vehiculo,
+            r.fecha_entrada,
+            r.fecha_salida,
+            u.nombre_completo as visitado_nombre,
+            u.casa_apto
+        FROM registros_acceso r
+        JOIN usuarios u ON r.usuario_visitado_id = u.id
+        ORDER BY r.fecha_entrada DESC
     `);
     return res.rows;
 };

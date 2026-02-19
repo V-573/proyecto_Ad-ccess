@@ -50,6 +50,8 @@ function App() {
 
 <Route path="/registrar-usuario/:id?" element={<RegistrarUsuario />} />
 
+<Route path="/parqueadero" element={<Dashboard />} />
+
 
       </Routes>
     </Router>
