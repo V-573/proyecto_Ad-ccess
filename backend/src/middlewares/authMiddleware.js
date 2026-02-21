@@ -19,25 +19,6 @@ export const verificarToken = (req, res, next) => {
     }
 };
 
-//Middleware para roles específicos
-// export const esAdmin = (req, res, next) => {
-//     if (req.usuario.rol !== 'admin') {
-//         return res.status(403).json({ error: "Acceso denegado. Se requiere rol de Administrador." });
-//     }
-//     next();
-// };
-
-// export const permitirRoles = (...rolesPermitidos) => {
-//     return (req, res, next) => {
-//         // IMPORTANTE: Tu verificarToken usa 'req.usuario', así que aquí usamos lo mismo
-//         if (!req.usuario || !rolesPermitidos.includes(req.usuario.rol)) {
-//             return res.status(403).json({ 
-//                 error: `Acceso denegado. Se requiere uno de estos roles: ${rolesPermitidos.join(', ')}` 
-//             });
-//         }
-//         next();
-//     };
-// };
 
 export const permitirRoles = (...rolesPermitidos) => {
     return (req, res, next) => {

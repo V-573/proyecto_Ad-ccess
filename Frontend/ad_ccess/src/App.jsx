@@ -51,7 +51,7 @@ function App() {
 <Route path="/registrar-usuario/:id?" element={<RegistrarUsuario />} />
 
 <Route path="/parqueadero" element={<Dashboard />} />
-
+<Route path="/minuta" element={<Dashboard />} />
 
       </Routes>
     </Router>

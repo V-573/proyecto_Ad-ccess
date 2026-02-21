@@ -35,16 +35,6 @@ const Usuarios = () => {
         obtenerUsuarios();
     }, []);
 
-    // Función para obtener iniciales del nombre (Ej: "Sandra Leal" -> "SL")
-    // const getIniciales = (nombre) => {
-    //     if (!nombre) return "?";
-    //     return nombre
-    //         .split(' ')
-    //         .map(palabra => palabra[0])
-    //         .join('')
-    //         .toUpperCase()
-    //         .slice(0, 2);
-    // };
 
 
     const eliminarUser = async (id, nombre) => {

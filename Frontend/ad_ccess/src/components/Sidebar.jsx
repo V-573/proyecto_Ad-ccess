@@ -27,12 +27,14 @@ const Sidebar = ({ setVista }) => { // 1. Recibimos setVista como prop
     const linksVisibles = menuItems.filter(item => item.roles.includes(rol));
 
     // 2. Función para manejar el clic en el menú
-    const handleMenuClick = (item) => {
-        // Si el ítem tiene una vista definida y tenemos la función setVista, la cambiamos
-        if (item.vista && setVista) {
-            setVista(item.vista);
-        }
-    };
+  const handleMenuClick = (item, e) => {
+    // Si el item tiene una vista (como 'minuta', 'visitantes', etc.)
+    // evitamos que el enlace cambie la URL y usamos el estado
+    if (item.vista && setVista) {
+        e.preventDefault(); // <--- ESTO EVITA QUE TE MANDE AL LOGIN
+        setVista(item.vista);
+    }
+};
 
     return (
         <aside className="menu-panel">
@@ -43,7 +45,7 @@ const Sidebar = ({ setVista }) => { // 1. Recibimos setVista como prop
                     <NavLink 
                         key={item.path}
                         to={item.path} 
-                        onClick={() => handleMenuClick(item)} // 3. Disparamos el cambio de vista
+                        onClick={(e) => handleMenuClick(item, e)} // 3. Disparamos el cambio de vista
                         className={({ isActive }) => 
                             isActive ? "menu-enlace menu-enlace-activo" : "menu-enlace"
                         }
