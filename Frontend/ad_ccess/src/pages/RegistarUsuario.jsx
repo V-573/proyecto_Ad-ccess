@@ -47,7 +47,7 @@ useEffect(() => {
             const cargarDatosUsuario = async () => {
                 try {
                     const token = localStorage.getItem('token');
-                    const res = await clienteAxios.get(`/usuario/${id}`, {
+                    const res = await clienteAxios.get(`/auth/usuario/${id}`, {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     const u = res.data;
@@ -157,12 +157,12 @@ const handleSubmit = async (e) => {
         };
 
         if (isEditMode) {
-            await clienteAxios.put(`/usuario/${id}`, data, config);
+            await clienteAxios.put(`/auth/usuario/${id}`, data, config);
             alert("Usuario actualizado con éxito");
             navigate('/usuarios');
         } else {
             // await clienteAxios.post('/api/auth/registro-admin', data, config);
-            await clienteAxios.post('/registro-admin', data, config);
+            await clienteAxios.post('/auth/registro-admin', data, config);
             alert("Usuario registrado con éxito");
             window.location.reload();
         }

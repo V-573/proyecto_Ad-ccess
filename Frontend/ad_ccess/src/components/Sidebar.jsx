@@ -16,12 +16,12 @@ const Sidebar = ({ setVista }) => { // 1. Recibimos setVista como prop
 
     const menuItems = [
         { path: '/dashboard', label: 'Inicio', icon: 'ph-fill ph-house', roles: ['admin', 'propietario', 'conserje'], vista: 'inicio' },
-        { path: '/usuarios', label: 'Usuarios', icon: 'ph ph-users', roles: ['admin'] },
+        { path: '/usuarios', label: 'Usuarios', icon: 'ph ph-users', roles: ['admin'], vista: 'usuarios' },
         { path: '/visitantes', label: 'Visitantes', icon: 'ph ph-address-book', roles: ['admin', 'conserje'], vista: 'visitantes' },
         { path: '/parqueadero', label: 'registroPasado', icon: 'ph ph-car', roles: ['admin', 'conserje'], vista: 'parqueadero' },
         { path: '/minuta', label: 'Minuta', icon: 'ph ph-book-open', roles: ['admin', 'conserje'], vista: 'minuta' },
         { path: '/noticias', label: 'Noticias', icon: 'ph ph-megaphone', roles: ['admin', 'propietario', 'conserje'], vista: 'noticias' },
-        { path: '/perfil', label: 'Mi Perfil', icon: 'ph ph-user', roles: ['admin', 'propietario'] },
+        { path: '/perfil', label: 'Mi Perfil', icon: 'ph ph-user', roles: ['admin', 'propietario'], vista: 'perfil' },
     ];
 
     const linksVisibles = menuItems.filter(item => item.roles.includes(rol));

@@ -27,6 +27,9 @@ import PerfilUsuario from './components/PerfilUsuario.jsx';
 function App() {
   return (
     <Router>
+
+
+      
       <Routes>
         {/* Ruta inicial: Login */}
         <Route path="/login" element={<Login />} />
@@ -54,6 +57,10 @@ function App() {
 <Route path="/minuta" element={<Dashboard />} />
 
       </Routes>
+
+
+
+
     </Router>
   );
 }

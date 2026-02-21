@@ -109,8 +109,30 @@ router.get('/lista-gestion',
     }
 );
 
+export const obtenerVisitantesActivos = async (req, res) => {
+    try {
+        const query = `
+            SELECT 
+                id, 
+                nombre_visitante, 
+                identificacion_visitante AS identificacion, 
+                usuario_visitado_id, 
+                fecha_entrada,
+                placa_vehiculo,
+                tipo_vehiculo
+            FROM public.registros_acceso 
+            WHERE fecha_salida IS NULL 
+            ORDER BY fecha_entrada DESC
+        `;
+        const resultado = await pool.query(query);
+        res.json(resultado.rows);
+    } catch (error) {
+        console.error("ERROR SQL:", error);
+        res.status(500).json({ error: "Error al obtener visitantes" });
+    }
+};
 
-
+router.get('/activos', verificarToken, permitirRoles('admin', 'conserje'), accesoController.obtenerVisitantesActivos);
 
 
 export default router;
