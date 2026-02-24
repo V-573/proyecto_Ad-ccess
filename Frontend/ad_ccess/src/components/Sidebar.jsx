@@ -16,7 +16,7 @@ const Sidebar = ({ setVista }) => { // 1. Recibimos setVista como prop
 
     const menuItems = [
         { path: '/dashboard', label: 'Inicio', icon: 'ph-fill ph-house', roles: ['admin', 'propietario', 'conserje'], vista: 'inicio' },
-        { path: '/usuarios', label: 'Usuarios', icon: 'ph ph-users', roles: ['admin'] },
+        { path: '/usuarios', label: 'Usuarios', icon: 'ph ph-users', roles: ['admin'], vista: 'usuarios' },
         { path: '/visitantes', label: 'Visitantes', icon: 'ph ph-address-book', roles: ['admin', 'conserje'], vista: 'visitantes' },
         { path: '/parqueadero', label: 'registroPasado', icon: 'ph ph-car', roles: ['admin', 'conserje'], vista: 'parqueadero' },
         { path: '/minuta', label: 'Minuta', icon: 'ph ph-book-open', roles: ['admin', 'conserje'], vista: 'minuta' },
@@ -31,7 +31,7 @@ const Sidebar = ({ setVista }) => { // 1. Recibimos setVista como prop
     // Si el item tiene una vista (como 'minuta', 'visitantes', etc.)
     // evitamos que el enlace cambie la URL y usamos el estado
     if (item.vista && setVista) {
-        e.preventDefault(); // <--- ESTO EVITA QUE TE MANDE AL LOGIN
+        //e.preventDefault(); // <--- ESTO EVITA QUE TE MANDE AL LOGIN
         setVista(item.vista);
     }
 };

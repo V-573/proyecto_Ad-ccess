@@ -1,15 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import InicioConserje from '../components/Conserje/InicioConcerje.jsx'; // Asegúrate de que la ruta sea correcta
 import PantallaVisitantes from '../components/Conserje/PantallaVisitantes.jsx';
 import RegistroPasado from '../components/Conserje/RegistroPasado.jsx';
 import Minuta from '../components/Conserje/Minuta.jsx';
+import Visitantes from '../components/Visitantes.jsx';
+import Usuarios from '../components/Usuarios.jsx';
+import Perfil from '../components/Perfil.jsx';
+
+
+const ResumenAdmin = () => (
+    <section className="activity-section">
+        <h2 className="section-title">Resumen General del Conjunto</h2>
+        <div className="dashboard-grid" style={{ gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+            <div className="noticia-card">
+                <h3>Estado Global</h3>
+                <p>Bienvenido al panel de control administrativo. Aquí podrás supervisar usuarios y minutas.</p>
+            </div>
+            <div className="noticia-card">
+                <h3>Accesos Recientes</h3>
+                <p>No hay alertas críticas el día de hoy.</p>
+            </div>
+        </div>
+    </section>
+);
 
 const Dashboard = () => {
+    const location = useLocation();
     // 1. Estados y Datos de Usuario
     const [vistaActual, setVistaActual] = useState('inicio');
     const userRaw = localStorage.getItem('usuario');
     const user = userRaw ? JSON.parse(userRaw) : null;
+
+
+useEffect(() => {
+        // Mapeamos la ruta de la URL al nombre de la vista interna
+        const path = location.pathname.replace('/', ''); // quita la barra diagonal
+        
+        if (path === 'dashboard' || path === '') {
+            setVistaActual('inicio');
+        } else {
+            setVistaActual(path); // 'visitantes', 'minuta', 'parqueadero', etc.
+        }
+    }, [location]);
+
 
     // 2. Formateador de Rol
     const formatRol = (rol) => {
@@ -23,7 +58,9 @@ const Dashboard = () => {
     };
 
     // 3. Lógica para renderizar el contenido dinámico del centro
-  const renderizarVistaDinamica = () => {
+
+
+ const renderizarVistaDinamica = () => {
     if (user?.rol === 'conserje') {
         switch (vistaActual) {
             case 'inicio':
@@ -57,14 +94,33 @@ const Dashboard = () => {
 
         // Si es ADMIN, mostramos su resumen
         if (user?.rol === 'admin') {
-            return (
-                <section className="activity-section">
-                    <h2 className="section-title">Resumen del Conjunto (Vista Admin)</h2>
-                    <p>Aquí verás estadísticas globales.</p>
-                </section>
-            );
+           
+        switch (vistaActual) {
+            case 'inicio':
+                return  <ResumenAdmin />; 
+            case 'visitantes':
+                return <Visitantes />;
+                 case 'parqueadero':
+               return <RegistroPasado />;
+            case 'minuta':
+                return <Minuta />; // <--- Ahora el Admin también puede entrar aquí
+            case 'usuarios':
+                return <Usuarios />;
+                case 'perfil':
+    return <Perfil />;
+     case 'noticias':
+               return <div> EN DESARROLLO ... ... ...</div>
+            default:
+                return <ResumenAdmin />;
         }
-    };
+    }
+            
+        }
+
+console.log("Vista actual:", vistaActual, "Usuario:", user);
+
+
+
 
     return (
         <div className="page-container" style={{ display: 'flex' }}>

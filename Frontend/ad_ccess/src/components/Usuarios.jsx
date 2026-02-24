@@ -22,7 +22,7 @@ const Usuarios = () => {
         const obtenerUsuarios = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const respuesta = await clienteAxios.get('/usuarios', {
+                const respuesta = await clienteAxios.get('/auth/usuarios', {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setUsuarios(respuesta.data);
@@ -43,7 +43,7 @@ const Usuarios = () => {
 
     try {
         const token = localStorage.getItem('token');
-        await clienteAxios.delete(`/usuario/${id}`, {
+        await clienteAxios.delete(`/auth/usuario/${id}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         

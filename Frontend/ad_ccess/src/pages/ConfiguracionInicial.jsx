@@ -46,7 +46,7 @@ const ConfiguracionInicial = () => {
            
 
             const token = localStorage.getItem('token');
-            await clienteAxios.post('/configuracion-inicial', dataToSend, {
+            await clienteAxios.post('/auth/configuracion-inicial', dataToSend, {
                 headers: { 
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${token}` 

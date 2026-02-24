@@ -30,12 +30,15 @@ function App() {
       <Routes>
         {/* Ruta inicial: Login */}
         <Route path="/login" element={<Login />} />
-        
-        {/* Ruta del Dashboard (por ahora vacía) */}
-        <Route path="/dashboard" element={<Dashboard/>} />
-        <Route path="/visitantes" element={<Dashboard />} />
 
-        <Route path="/usuarios" element={<Usuarios />} />
+<Route path="/dashboard" element={<Dashboard />} />
+<Route path="/visitantes" element={<Dashboard />} />
+<Route path="/parqueadero" element={<Dashboard />} />
+<Route path="/minuta" element={<Dashboard />} />
+<Route path="/noticias" element={<Dashboard />} />
+<Route path="/perfil" element={<Dashboard />} />
+
+<Route path="/usuarios" element={<Usuarios />} />
 
         <Route path="/usuarios/nuevo" element={<RegistrarUsuario />} />
 

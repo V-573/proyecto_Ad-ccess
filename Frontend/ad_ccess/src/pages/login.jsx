@@ -10,40 +10,10 @@ const Login = () => {
         setCredenciales({ ...credenciales, [e.target.name]: e.target.value });
     };
 
-//     const handleSubmit = async (e) => {
-//         e.preventDefault();
-//         try {
-//             // Enviamos "email" y "password" que es lo que espera tu backend
-//             const respuesta = await clienteAxios.post('/login', credenciales);
-//             localStorage.setItem('token', respuesta.data.token);
-
-
-//             // 2. GUARDAMOS EL USUARIO (Esto es lo que te faltaba)
-//         // Asegúrate de que el backend envíe respuesta.data.usuario
-//         if (respuesta.data.usuario) {
-//             localStorage.setItem('usuario', JSON.stringify(respuesta.data.usuario));
-//         }
-
-
-
-// // Si no hay unidad creada, lo mandamos al Wizard
-//         if (respuesta.data.requiereConfiguracion) {
-//             navigate('/configuracion-inicial');
-//         } else {
-//             navigate('/dashboard');
-//         }
-
-
-//             // navigate('/dashboard'); 
-//         } catch (error) {
-//             alert(error.response?.data?.error || "Error al iniciar sesión");
-//         }
-//     };
-
 const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const respuesta = await clienteAxios.post('/login', credenciales);
+        const respuesta = await clienteAxios.post('/auth/login', credenciales);
         
         // 1. Guardamos el TOKEN para las peticiones
         localStorage.setItem('token', respuesta.data.token);
