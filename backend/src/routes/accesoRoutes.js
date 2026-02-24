@@ -111,6 +111,8 @@ router.get('/lista-gestion',
 
 
 
+router.get('/activos', verificarToken, permitirRoles('admin', 'conserje'), accesoController.obtenerVisitantesActivos);
+
 
 
 export default router;

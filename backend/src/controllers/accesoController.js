@@ -1,6 +1,6 @@
 import * as AccesoService from '../services/accesoService.js';
 import * as UsuarioService from '../services/usuarioService.js'
-
+import pool from '../config/db.js'; // O donde tengas tu conexión a la base de datos
 
 export const entrada = async (req, res) => {
     try {
@@ -80,5 +80,31 @@ export const obtenerHistorial = async (req, res) => {
         res.json(historial);
     } catch (error) {
         res.status(500).json({ error: "Error al obtener el historial" });
+    }
+};
+
+
+export const obtenerVisitantesActivos = async (req, res) => {
+    try {
+        // Usamos el nombre REAL de tu tabla: registros_acceso
+        // Usamos fecha_salida en lugar de hora_salida
+        const query = `
+            SELECT 
+                id, 
+                nombre_visitante, 
+                identificacion_visitante AS identificacion, 
+                fecha_entrada,
+                placa_vehiculo
+            FROM public.registros_acceso 
+            WHERE fecha_salida IS NULL 
+            ORDER BY fecha_entrada DESC
+        `;
+        
+        const resultado = await pool.query(query);
+        res.json(resultado.rows);
+    } catch (error) {
+        // Esto imprimirá el error real en tu terminal si algo falla
+        console.error("DETALLE DEL ERROR EN EL SERVIDOR:", error);
+        res.status(500).json({ error: "Error al obtener visitantes de la tabla registros_acceso" });
     }
 };
