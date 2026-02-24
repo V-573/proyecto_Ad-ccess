@@ -10,6 +10,21 @@ import Usuarios from '../components/Usuarios.jsx';
 import Perfil from '../components/Perfil.jsx';
 
 
+
+// return (
+            
+            // );
+const ResumenPropietario= () => (
+        <section className="activity-section full-width">
+                    <h2 className="section-title">Anuncios de la Administración</h2>
+                    <div className="noticia-card">
+                        <span className="badge-new">Nuevo</span>
+                        <h3>Corte de agua programado</h3>
+                        <p>Este jueves de 8:00 AM a 12:00 PM por mantenimiento de tanques.</p>
+                    </div>
+                </section>
+);
+
 const ResumenAdmin = () => (
     <section className="activity-section">
         <h2 className="section-title">Resumen General del Conjunto</h2>
@@ -80,16 +95,26 @@ useEffect(() => {
 
         // Si es PROPIETARIO, mostramos su dashboard fijo
         if (user?.rol === 'propietario') {
-            return (
-                <section className="activity-section full-width">
-                    <h2 className="section-title">Anuncios de la Administración</h2>
-                    <div className="noticia-card">
-                        <span className="badge-new">Nuevo</span>
-                        <h3>Corte de agua programado</h3>
-                        <p>Este jueves de 8:00 AM a 12:00 PM por mantenimiento de tanques.</p>
-                    </div>
-                </section>
-            );
+
+           
+        switch (vistaActual) {
+            case 'inicio':
+                return  <ResumenPropietario />; 
+                case 'perfil':
+    return <Perfil />;
+     case 'noticias':
+               return <div> EN DESARROLLO ... ... ...</div>
+            default:
+                return <ResumenAdmin />;
+        }
+
+
+
+
+
+
+
+            
         }
 
         // Si es ADMIN, mostramos su resumen
