@@ -14,7 +14,7 @@ const PerfilUsuario = () => {
     try {
       setCargando(true);
       const token = localStorage.getItem("token");
-      const res = await clienteAxios.get(`/usuario/${id}`, {
+      const res = await clienteAxios.get(`/auth/usuario/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setPerfil(res.data);

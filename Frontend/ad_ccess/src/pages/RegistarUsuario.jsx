@@ -47,7 +47,7 @@ useEffect(() => {
             const cargarDatosUsuario = async () => {
                 try {
                     const token = localStorage.getItem('token');
-                    const res = await clienteAxios.get(`/usuario/${id}`, {
+                    const res = await clienteAxios.get(`/auth/usuario/${id}`, {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     const u = res.data;
