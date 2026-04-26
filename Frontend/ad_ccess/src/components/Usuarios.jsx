@@ -56,6 +56,8 @@ const Usuarios = () => {
     }
 };
     return (
+
+        
         <div className="page-container">
             <Sidebar />
 
@@ -94,15 +96,6 @@ const Usuarios = () => {
                                                 <div className="user-info">
 
 
-                                                    
-                                                      {/* div avatar<div className="user-avatar-mini">
-                                                     
-                                                        {usuario.foto ? (
-                                                            <img src={`http://localhost:4000${usuario.foto}`} alt="avatar" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
-                                                        ) : (
-                                                            getIniciales(usuario.nombre_completo)
-                                                        )}
-                                                    </div> */}
 <Avatar
     src={usuario.foto} 
     nombre={usuario.nombre_completo} 

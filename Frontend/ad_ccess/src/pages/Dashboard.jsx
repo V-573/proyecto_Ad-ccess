@@ -9,9 +9,7 @@ import Visitantes from "../components/Visitantes.jsx";
 import Usuarios from "../components/Usuarios.jsx";
 import Perfil from "../components/Perfil.jsx";
 
-// return (
 
-// );
 const ResumenPropietario = () => (
   <section className="activity-section full-width">
     <h2 className="section-title">Anuncios de la Administración</h2>

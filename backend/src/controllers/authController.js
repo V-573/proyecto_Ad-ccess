@@ -80,6 +80,10 @@ export const eliminarUsuario = async (req, res) => {
 
 // --- ACTUALIZAR USUARIO ---
 export const actualizarUsuario = async (req, res) => {
+
+console.log("Cuerpo recibido:", req.body); // Aquí verás los textos (familiares, nombre)
+    console.log("Archivos recibidos:", req.files); // Aquí verás las fotos
+
     try {
         await UsuarioService.actualizar(req.params.id, req.body, req.files);
         res.json({ mensaje: "Usuario actualizado" });

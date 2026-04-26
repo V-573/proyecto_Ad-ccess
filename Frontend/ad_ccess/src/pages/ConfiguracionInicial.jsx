@@ -10,6 +10,7 @@ const ConfiguracionInicial = () => {
         nombre_completo: '',
         identificacion: '',
         email: '',
+        telefono:'',
         unidad_nombre: '',
         num_casas: '',
         parqueaderos: '',
@@ -77,8 +78,10 @@ const ConfiguracionInicial = () => {
                             <input type="text" name="nombre_completo" placeholder="Nombre Completo" className="input" onChange={handleChange} required />
                             <input type="text" name="identificacion" placeholder="Identificación" className="input" onChange={handleChange} required />
                             <input type="email" name="email" placeholder="Correo electrónico" className="input" onChange={handleChange} required />
-                        </section>
+                            <input type="tel" name="telefono" placeholder="Numero de telefono" className="input" onChange={handleChange} required />
 
+                        </section>
+                           
                         {/* Columna Derecha: Foto */}
                         <section className="wizard-section section-foto">
                             <h3 className="titulo-seccion">Foto de Perfil</h3>

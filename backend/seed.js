@@ -3,8 +3,8 @@ import bcrypt from 'bcryptjs';
 
 const crearUsuarioReferencia = async () => {
     const nombre = "Admin de Referencia";
-    const email = "admin@adccess.com";
-    const passwordClaro = "admin123"; // La contraseña que usarás para loguearte
+    const email = "proyectos@jhongaviria.com";
+    const passwordClaro = "Adm1n@"; //el hash queda: $2b$10$/2CMMzTCn86Xv5xhXZpWd.oNmMC8QNIKS4VrIKji0vTTrGwCskdtq
     const identificacion = "99999999";
     const rol = "admin";
 
@@ -22,7 +22,6 @@ const crearUsuarioReferencia = async () => {
             [nombre, identificacion, email, hashedPassword, rol]
         );
 
-        console.log("-----------------------------------------");
         console.log("✅ Usuario de referencia creado con éxito");
         console.log(`📧 Email: ${email}`);
         console.log(`🔑 Password: ${passwordClaro}`);

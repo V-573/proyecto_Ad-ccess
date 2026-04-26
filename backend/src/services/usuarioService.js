@@ -21,7 +21,7 @@ export const eliminar = async (id) => {
 
 export const obtenerPorIdCompleto = async (id) => {
     const userRes = await pool.query(
-        "SELECT id, nombre_completo, identificacion, email, rol, foto, casa_apto, fecha_creacion FROM usuarios WHERE id = $1",
+        "SELECT id, nombre_completo, identificacion, email, telefono, rol, foto, casa_apto, fecha_creacion FROM usuarios WHERE id = $1",
         [id]
     );
     if (userRes.rows.length === 0) return null;
@@ -43,7 +43,7 @@ export const crearUsuarioCompleto = async (datos, archivos) => {
     const client = await pool.connect();
     try {
         await client.query('BEGIN');
-        const { nombre_completo, identificacion, email, password, rol, casa_apto, familia, vehiculos } = datos;
+        const { nombre_completo, identificacion, email, telefono, password, rol, casa_apto, familia, vehiculos } = datos;
         
         const valorCasa = (rol === 'propietario' && casa_apto?.trim()) ? casa_apto : null;
         if (valorCasa) {
@@ -55,8 +55,8 @@ export const crearUsuarioCompleto = async (datos, archivos) => {
         const fotoPath = archivos?.['foto'] ? `/uploads/${archivos['foto'][0].filename}` : null;
 
         const userRes = await client.query(
-            "INSERT INTO usuarios (nombre_completo, identificacion, email, password, rol, foto, casa_apto) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id",
-            [nombre_completo, identificacion, email, hashedPassword, rol, fotoPath, valorCasa]
+            "INSERT INTO usuarios (nombre_completo, identificacion, email, telefono, password, rol, foto, casa_apto) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id",
+            [nombre_completo, identificacion, email, telefono, hashedPassword, rol, fotoPath, valorCasa]
         );
         
         const nuevoId = userRes.rows[0].id;
@@ -75,7 +75,7 @@ export const crearUsuarioCompleto = async (datos, archivos) => {
 };
 
 export const completarConfiguracion = async (datos, archivos, adminId) => {
-    const { nombre_completo, identificacion, email, unidad_nombre, num_casas, parqueaderos, password } = datos;
+    const { nombre_completo, identificacion, email, telefono, unidad_nombre, num_casas, parqueaderos, password } = datos;
     const fotoPath = archivos?.['foto'] ? `/uploads/${archivos['foto'][0].filename}` : null;
     
     const hashedPassword = await AuthService.encriptarPassword(password);
@@ -84,8 +84,8 @@ export const completarConfiguracion = async (datos, archivos, adminId) => {
     try {
         await client.query('BEGIN');
         await client.query(
-            "UPDATE usuarios SET nombre_completo = $1, identificacion = $2, email = $3, password = $4, foto = $5 WHERE id = $6",
-            [nombre_completo, identificacion, email, hashedPassword, fotoPath, adminId]
+            "UPDATE usuarios SET nombre_completo = $1, identificacion = $2, email = $3, telefono= $4, password = $5, foto = $6 WHERE id = $7",
+            [nombre_completo, identificacion, email, telefono, hashedPassword, fotoPath, adminId]
         );
         await client.query(
             "INSERT INTO unidades_residenciales (nombre, num_casas, parqueaderos_totales, admin_id) VALUES ($1, $2, $3, $4)",
@@ -101,17 +101,27 @@ export const completarConfiguracion = async (datos, archivos, adminId) => {
 };
 
 export const actualizar = async (id, datos, archivos) => {
-    const { nombre_completo, email, rol, casa_apto, identificacion, familia, vehiculos } = datos;
+    const { nombre_completo, email, rol, casa_apto, identificacion, telefono, familia, vehiculos,fotoActual } = datos;
     const client = await pool.connect();
+
+
     try {
         await client.query('BEGIN');
         const valorCasa = (rol === 'propietario' && casa_apto?.trim()) ? casa_apto : null;
-        let rutaFoto = datos.foto; // Mantener foto actual si no se sube una nueva
-        if (archivos?.['foto']) rutaFoto = `/uploads/${archivos['foto'][0].filename}`;
 
+
+        // let rutaFoto = datos.foto; // Mantener foto actual si no se sube una nueva
+        // if (archivos?.['foto']) rutaFoto = `/uploads/${archivos['foto'][0].filename}`;
+        
+let rutaFoto = fotoActual || null; // Por defecto la que ya tenía
+
+        // Si se subió un ARCHIVO nuevo, este manda sobre la anterior
+        if (archivos && archivos['foto']) {
+            rutaFoto = `/uploads/${archivos['foto'][0].filename}`;
+        }
         await client.query(
-            `UPDATE usuarios SET nombre_completo = $1, email = $2, rol = $3, casa_apto = $4, identificacion = $5, foto = $6 WHERE id = $7`,
-            [nombre_completo, email, rol, valorCasa, identificacion, rutaFoto, id]
+            `UPDATE usuarios SET nombre_completo = $1, email = $2, telefono = $3, rol = $4, casa_apto = $5, identificacion = $6, foto = $7 WHERE id = $8`,
+            [nombre_completo, email, telefono, rol, valorCasa, identificacion, rutaFoto, id]
         );
 
         if (rol === 'propietario') {
@@ -127,18 +137,24 @@ export const actualizar = async (id, datos, archivos) => {
     }
 };
 
-// --- FUNCIONES DE APOYO (HELPERS) ---
 
 export const gestionarFamiliares = async (client, usuarioId, familiaData, archivosFotos, esEdicion = false) => {
     if (!familiaData) return;
-    const miembros = typeof familiaData === 'string' ? JSON.parse(familiaData) : familiaData;
     
+    // 1. Asegurar que tenemos un array de objetos
+    const miembros = typeof familiaData === 'string' ? JSON.parse(familiaData) : familiaData;
+
     if (esEdicion) {
-        const idsQueSeQuedan = miembros.map(f => f.id).filter(id => id !== null);
+        // 2. Extraer solo IDs numéricos válidos
+        const idsQueSeQuedan = miembros
+            .map(f => parseInt(f.id))
+            .filter(id => !isNaN(id));
+
         if (idsQueSeQuedan.length > 0) {
+            // Usamos ANY($2) que es más seguro y limpio para PostgreSQL que "IN (...)"
             await client.query(
-                `DELETE FROM familiares WHERE usuario_id = $1 AND id NOT IN (${idsQueSeQuedan.join(',')})`,
-                [usuarioId]
+                "DELETE FROM familiares WHERE usuario_id = $1 AND id <> ALL($2::int[])",
+                [usuarioId, idsQueSeQuedan]
             );
         } else {
             await client.query("DELETE FROM familiares WHERE usuario_id = $1", [usuarioId]);
@@ -150,6 +166,8 @@ export const gestionarFamiliares = async (client, usuarioId, familiaData, archiv
 
     for (let f of miembros) {
         let rutaFotoFinal = f.foto || null;
+        
+        // Verificamos si hay una nueva foto en el array de archivos
         if (f.tieneNuevaFoto && fotosFamiliares[fotoIndex]) {
             rutaFotoFinal = `/uploads/${fotosFamiliares[fotoIndex].filename}`;
             fotoIndex++;
@@ -170,15 +188,16 @@ export const gestionarFamiliares = async (client, usuarioId, familiaData, archiv
 };
 
 export const gestionarVehiculos = async (client, usuarioId, vehiculosData, esEdicion = false) => {
+
     if (!vehiculosData) return;
     const autos = typeof vehiculosData === 'string' ? JSON.parse(vehiculosData) : vehiculosData;
     
     if (esEdicion) {
-        const idsVehiculosQueSeQuedan = autos.map(v => v.id).filter(id => id != null);
-        if (idsVehiculosQueSeQuedan.length > 0) {
+        const idsVehiculos = autos.map(v => parseInt(v.id)).filter(id => !isNaN(id));
+        if (idsVehiculos.length > 0) {
             await client.query(
-                `DELETE FROM vehiculos WHERE usuario_id = $1 AND id NOT IN (${idsVehiculosQueSeQuedan.join(',')})`,
-                [usuarioId]
+                "DELETE FROM vehiculos WHERE usuario_id = $1 AND id <> ALL($2::int[])",
+                [usuarioId, idsVehiculos]
             );
         } else {
             await client.query("DELETE FROM vehiculos WHERE usuario_id = $1", [usuarioId]);

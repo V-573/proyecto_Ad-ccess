@@ -14,6 +14,7 @@ const RegistrarUsuario = () => {
         nombre_completo: '',
         identificacion: '',
         email: '',
+        telefono:'',
         password: '',
         confirmPassword: '',
         casa_apto: ''
@@ -57,6 +58,7 @@ useEffect(() => {
                         nombre_completo: u.nombre_completo || '',
                         identificacion: u.identificacion || '',
                         email: u.email || '',
+                        telefono: u.telefono || '',
                         password: '',
                         confirmPassword: '',
                         casa_apto: u.casa_apto || ''
@@ -108,6 +110,7 @@ const handleSubmit = async (e) => {
     data.append('nombre_completo', formData.nombre_completo);
     data.append('identificacion', formData.identificacion);
     data.append('email', formData.email);
+    data.append('telefono', formData.telefono);
     data.append('rol', rolSeleccionado);
     
     // Solo enviar casa_apto si es propietario
@@ -210,6 +213,7 @@ const handleSubmit = async (e) => {
                                 <input type="text" name="nombre_completo" value={formData.nombre_completo} placeholder="Nombre Completo" className="input" onChange={handleChange} required />
                                 <input type="text" name="identificacion" value={formData.identificacion} placeholder="Identificación" className="input" onChange={handleChange} required />
                                 <input type="email" name="email" value={formData.email} placeholder="Correo electrónico" className="input" onChange={handleChange} required />
+                                <input type="tel" name="telefono" placeholder="Numero de telefono" className="input" onChange={handleChange} required />
                             </div>
                         </section>
 

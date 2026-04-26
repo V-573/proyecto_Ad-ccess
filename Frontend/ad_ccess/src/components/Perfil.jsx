@@ -44,15 +44,7 @@ const Perfil = () => {
                 borderRadius: '8px',
                 boxShadow: '0 2px 10px rgba(0,0,0,0.1)' 
             }}>
-                {/* <div className="perfil-foto">
-                   
-                    <Avatar 
-                        src={perfil.foto_url} 
-                        nombre={perfil.nombre_completo || perfil.nombre} 
-                        size="150px" 
-                        fontSize="3rem" 
-                    />
-                </div> */}
+               
 
                 <div className="perfil-foto">
     <Avatar 
